@@ -2,7 +2,6 @@ module Main (main) where
 
 import System.IO (hSetBuffering, stdout, BufferMode(NoBuffering))
 import Data.Char (toUpper)
-import Text.Read (readMaybe)
 
 -----------------------------------------------------------------------------
 ------------------------ Iskander Nafikov BS20-SD-01 ------------------------
@@ -12,7 +11,8 @@ import Text.Read (readMaybe)
 main :: IO ()
 main = do
   hSetBuffering stdout NoBuffering
-  example
+  _ <- sequenceMaybeIO [maybeIO (Just (putStrLn "hello")), maybeIO Nothing, maybeIO (Just (putStrLn "ell")), maybeIO Nothing]
+  print ""
 
 
 ------------- Exercise 1 -------------
@@ -56,6 +56,13 @@ whenIO cond program =
     True -> program
     False -> return ()
 
+---- c)
+maybeIO :: Maybe (IO a) -> IO (Maybe a)
+maybeIO Nothing = return Nothing
+maybeIO (Just program) = do
+  programContent <- program
+  return (Just programContent)
+  
 ---- d)
 sequenceMaybeIO :: [IO (Maybe a)] -> IO [a]
 sequenceMaybeIO [] = return []
