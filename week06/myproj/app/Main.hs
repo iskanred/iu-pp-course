@@ -150,3 +150,8 @@ combineResultsWith :: (a -> b -> c) -> Result a -> Result b -> Result c
 combineResultsWith func (Success val1) (Success val2) = Success $func val1 val2
 combineResultsWith _ (Success _) (Failure errMsg) = Failure errMsg
 combineResultsWith _ (Failure errMsg) _ = Failure errMsg
+
+
+a = do
+      x <- return getLine
+      return x
