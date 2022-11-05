@@ -6,11 +6,7 @@ randomDigits :: StdGen -> [Int]
 randomDigits g = randomRs (0, 9) g
 
 main :: IO ()
-main = do
-  -- generate a new seed
-  g <- newStdGen
-  -- print 10 random digits
-  print (take 10 (randomDigits g))
+main = print (take 3 [1..] ++ take 3 [2..] + take 3 [3..]	)
 
 
 -- ex1
@@ -38,3 +34,10 @@ cond ((_, expr) : _) _ = expr
 chunksOf :: Int -> [a] -> [[a]]
 chunksOf _ [] = []
 chunksOf size xs = take size xs : chunksOf size (drop size xs)
+
+
+-- ex5
+f :: Int -> Int -> Int
+f x 0 = 0
+f 0 y = 0
+f x y = x * y

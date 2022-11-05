@@ -6,9 +6,7 @@ randomDigits :: StdGen -> [Int]
 randomDigits g = randomRs (0, 9) g
 
 main :: IO ()
-main = do
-  g <- stdGen
-  mapM_ print (randomMatrix 3 g)
+main = putStrLn ""
 
 
 -- ex1
@@ -39,3 +37,5 @@ chunksOf size xs = take size xs : chunksOf size (drop size xs)
 
 
 -- ex5
+af = do
+  Just return
