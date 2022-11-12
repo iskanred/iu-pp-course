@@ -1,0 +1,239 @@
+<div class="notebook">
+
+<div class="nb-cell markdown" name="md1">
+# **Problem Set #10**
+</div>
+
+<div class="nb-cell markdown" name="md2">
+#### Iskander Nafikov BS20-SD-01, i.nafikov@innopolis.university
+</div>
+
+<div class="nb-cell markdown" name="md7">
+---
+</div>
+
+<div class="nb-cell program" data-background="true" name="p1">
+% student(Name, Group)
+student(alisa, 2).
+student(bob, 1).
+student(chloe, 2).
+student(denise, 1).
+student(edward, 2).
+
+% friend(Name, Name)
+friend(alisa, bob).
+friend(alisa, denise).
+friend(bob, chloe).
+friend(bob, edward).
+friend(chloe, denise).
+friend(denise, edward).
+
+% parent(Parent, Child)
+parent(marjorie, bart).
+parent(marjorie, lisa).
+parent(marjorie, maggie).
+parent(homer, bart).
+parent(homer, lisa).
+parent(homer, maggie).
+parent(abraham, homer).
+parent(mona, homer).
+parent(jacqueline, marjorie).
+parent(jacqueline, patty).
+parent(jacqueline, selma).
+parent(clancy, marjorie).
+parent(clancy, patty).
+parent(clancy, selma).
+parent(selma, ling).
+
+% unary(Number)
+unary(z).
+unary(s(X)) :- unary(X).
+</div>
+
+<div class="nb-cell markdown" name="md3">
+### 1. Draw search trees for the following queries:
+</div>
+
+<div class="nb-cell query" name="q1">
+/* (a) */ friend(alisa, Y), friend(Y, Z)
+</div>
+
+<div class="nb-cell markdown" name="md4">
+Image is attached to the attachement
+</div>
+
+<div class="nb-cell query" name="q2">
+/* (b) */ friend(X, Y)
+</div>
+
+<div class="nb-cell markdown" name="md5">
+Image is attached to the files
+</div>
+
+<div class="nb-cell query" name="q3">
+/* (c) */ parent(jacqueline, Y), parent(Y, ling)
+</div>
+
+<div class="nb-cell markdown" name="md17">
+Image is attached to the files
+</div>
+
+<div class="nb-cell markdown" name="md10">
+---
+</div>
+
+<div class="nb-cell markdown" name="md6">
+### 2. Write down predicate groupmates/2 that checks whether two students are from the same group:
+</div>
+
+<div class="nb-cell program" name="p2">
+groupmates(X, Y) :- student(X, Group), student(Y, Group).
+</div>
+
+<div class="nb-cell query" name="q4">
+groupmates(alisa, bob)
+</div>
+
+<div class="nb-cell query" name="q5">
+groupmates(alisa, edward)
+</div>
+
+<div class="nb-cell markdown" name="md11">
+---
+</div>
+
+<div class="nb-cell markdown" name="md8">
+### 3. Implement predicate relative/2 that checks whether two people are related by blood (share a common ancestor):
+</div>
+
+<div class="nb-cell program" name="p3">
+relative(X, Y) :- parent(X, Y).
+relative(X, Y) :- parent(Y, X).
+relative(X, Y) :- parent(Z, X), relative(Z, Y).
+relative(X, Y) :- parent(Z, Y), relative(Z, X).
+</div>
+
+<div class="nb-cell query" name="q6">
+relative(selma, patty)
+</div>
+
+<div class="nb-cell query" name="q7">
+relative(lisa, ling)
+</div>
+
+<div class="nb-cell query" name="q8">
+relative(lisa, selma)
+</div>
+
+<div class="nb-cell query" name="q9">
+relative(homer, selma)
+</div>
+
+<div class="nb-cell markdown" name="md12">
+---
+</div>
+
+<div class="nb-cell markdown" name="md9">
+### 4. Implement the following predicates for unary numbers:
+</div>
+
+<div class="nb-cell program" data-background="true" name="p5">
+% From lab %
+add(z, Y, Y).
+add(s(X), Y, s(R)) :- add(X, Y, R).
+</div>
+
+<div class="nb-cell markdown" name="md13">
+(a) **Implement a predicate double/2 that checks if first number is exactly two times the second:**
+</div>
+
+<div class="nb-cell program" data-background="true" name="p4">
+double(X, Y) :- add(X, X, Y).
+</div>
+
+<div class="nb-cell query" name="q10">
+double(s(z), s(s(z)))
+</div>
+
+<div class="nb-cell query" name="q11">
+double(s(s(z)), X)
+</div>
+
+<div class="nb-cell query" name="q12">
+double(X, s(s(s(s(z)))))
+</div>
+
+<div class="nb-cell query" name="q13">
+double(X, s(s(s(z))))
+</div>
+
+<div class="nb-cell query" name="q14">
+double(z, z)
+</div>
+
+<div class="nb-cell markdown" name="md14">
+(b) **Implement a predicate leq/2 that checks if the first number is less than or equal to the second numbers:**
+</div>
+
+<div class="nb-cell program" name="p6">
+leq(X, Y) :- add(X, _, Y).
+</div>
+
+<div class="nb-cell query" name="q15">
+leq(s(s(z)), s(s(s(z))))
+</div>
+
+<div class="nb-cell query" name="q16">
+leq(s(s(s(s(z)))), s(s(s(z))))
+</div>
+
+<div class="nb-cell markdown" name="md15">
+(c) **Implement multiplication for unary numbers as a predicate mult/2:**
+</div>
+
+<div class="nb-cell program" data-background="true" name="p7">
+mult(z, _, z).
+mult(_, z, z).
+mult(s(X), Y, R) :- mult(X, Y, Z), add(Y, Z, R).
+</div>
+
+<div class="nb-cell query" name="q17">
+mult(s(s(z)), s(s(s(z))), X)
+</div>
+
+<div class="nb-cell query" name="q18">
+mult(X, s(s(s(z))), s(s(s(s(s(s(z)))))))
+</div>
+
+<div class="nb-cell markdown" name="md16">
+(d) **Implement a predicate powerOf2/2 such that powerOf2(N, M) is true when M is equal to 2 to the power of N:**
+</div>
+
+<div class="nb-cell program" data-background="true" name="p8">
+mult(z, _, z).
+mult(_, z, z).
+mult(s(X), Y, R) :- mult(X, Y, Z), add(Y, Z, R).
+
+leq(X, Y) :- add(X, _, Y).
+
+powerOf2(z, s(z)).
+powerOf2(s(N), M) :- leq(Z, M), mult(s(s(z)), Z, M), powerOf2(N, Z).
+</div>
+
+<div class="nb-cell query" name="q19">
+powerOf2(s(s(z)), s(s(s(s(z)))))
+</div>
+
+<div class="nb-cell query" name="q20">
+powerOf2(X, s(s(s(z))))
+</div>
+
+<div class="nb-cell query" name="q21">
+powerOf2(s(z), X)
+</div>
+
+<div class="nb-cell query" name="q22">
+powerOf2(X, Y)
+</div>
+
+</div>
