@@ -1,0 +1,132 @@
+<div class="notebook">
+
+<div class="nb-cell markdown" name="md1">
+# **Problem Set #12**
+
+#### Iskander Nafikov | BS20-SD-01 | i.nafikov@innopolis.university
+
+---
+</div>
+
+<div class="nb-cell markdown" name="md2">
+### 1. Implement the following variations of a predicate that can find a minimum/maximum:
+</div>
+
+<div class="nb-cell markdown" name="md3">
+(a) **Write down predicate ` minimum/2` that finds the minimum number in a list of numbers**
+</div>
+
+<div class="nb-cell program" name="p1">
+minimum([H|T], Min) :- minimum_(T, H, Min).
+
+min_(X, Y, Z) :- X &lt; Y, !, X = Z.
+min_(_, Y, Y).
+
+minimum_([], Min, Min).
+minimum_([H|T], Cur, Min) :-
+    min_(H, Cur, Res),
+    minimum_(T, Res, Min).
+</div>
+
+<div class="nb-cell query" name="q1">
+minimum([3, 6, 2, 5, 4, 7], X)
+</div>
+
+<div class="nb-cell markdown" name="md4">
+(b) **Write down predicate ` leastSpecific` that finds the term that is least specified (i.e. it can
+be unified individually with all terms in the list):**
+</div>
+
+<div class="nb-cell program" name="p2">
+leastSpecific(X, Xs) :- helper(X, Xs, Xs).
+
+unifiable_(_, []).
+% using builtin function `unifialbe/3`
+unifiable_(X, [H|T]) :- unifiable(X, H, Unifier), length(Unifier, Len), Len \= 0, !, unifiable_(X, T).
+unifiable_(X, [H|T]) :- X = H, unifiable_(X, T). 
+
+helper(X, [X|_], Xs) :- unifiable_(X, Xs), !.
+helper(X, [_|T], Xs) :- helper(X, T, Xs).
+</div>
+
+<div class="nb-cell query" name="q2">
+leastSpecific(t(X, Y), [t(a, b), t(X, b), t(a, X), t(X, X), t(X, Y)])
+</div>
+
+<div class="nb-cell markdown" name="md5">
+### 2. Implement the following variations of a predicate that can remove elements from a list:
+</div>
+
+<div class="nb-cell markdown" name="md6">
+(a) **Without using negation or ` fail`, implement predicate ` remove/3` that removes all occurrences
+of a given element from a list:**
+</div>
+
+<div class="nb-cell program" name="p3">
+remove(_, [], []).
+remove(X, [X|T], Xs) :- remove(X, T, Xs), !.
+remove(X, [H|T], [H|RT]) :- remove(X, T, RT).
+</div>
+
+<div class="nb-cell query" name="q3">
+remove(e, [a,p,p,l,e,p,i,e], [a,p,p,l,p,i])
+</div>
+
+<div class="nb-cell markdown" name="md7">
+(b) **Implement predicate ` removeU/3` that removes all elements from a list that can be unified
+with a given term:**
+</div>
+
+<div class="nb-cell program" name="p4">
+removeU(_, [], []).
+removeU(X, [H|T], Xs) :- unifiable(X, H, _), removeU(X, T, Xs), !.
+removeU(X, [H|T], [H|RT]) :- removeU(X, T, RT).
+</div>
+
+<div class="nb-cell query" name="q4">
+removeU(t(X), [1, a, A, tb, t(b), tX, t(B)], Y)
+</div>
+
+<div class="nb-cell markdown" name="md8">
+### 3. Consider predicates ` nat/1` and ` nat/2` defined as follows:
+</div>
+
+<div class="nb-cell program" data-background="true" name="p5">
+nat(0).
+nat(N) :- nat(K), N is K+1.
+nat(0, 0) :- !.
+nat(0, Max) :- Max &gt; 0.
+nat(N, Max) :- M is Max-1, nat(K, M), N is K+1.
+</div>
+
+<div class="nb-cell markdown" name="md9">
+(a) **Implement predicate ` prime/1` that checks if a given number is a prime number. The implementation should encode the following definition: “a number N is prime if there does not
+exist a pair of numbers 1 &lt; X, Y &lt; N such that X × Y = N.”**
+</div>
+
+<div class="nb-cell program" name="p6">
+% Not implemented
+</div>
+
+<div class="nb-cell query" name="q5">
+fail /* Not implemented */
+</div>
+
+<div class="nb-cell markdown" name="md10">
+(b) **Implement predicate ` coprime/2` that checks if two numbers are coprime. The implementation should encode the following definition: “two numbers N and M are coprime if there
+does not exist a pair of numbers 1 ≤ K ≤ M and 1 ≤ L &lt; N such that** **N × K = M × L.”**
+</div>
+
+<div class="nb-cell program" name="p7">
+% Not implemented
+</div>
+
+<div class="nb-cell query" name="q6">
+fail /* Not implemented */
+</div>
+
+<div class="nb-cell query" name="q7">
+fail /* Not implemented */
+</div>
+
+</div>

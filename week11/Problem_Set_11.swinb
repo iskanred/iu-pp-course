@@ -1,0 +1,243 @@
+<div class="notebook">
+
+<div class="nb-cell markdown" name="md1">
+# **Problem Set #11**
+
+#### Iskander Nafikov BS20-SD-01, i.nafikov@innopolis.university
+</div>
+
+<div class="nb-cell markdown" name="md7">
+---
+</div>
+
+<div class="nb-cell markdown" name="md9">
+### 1. Implement the following predicates on lists:
+</div>
+
+<div class="nb-cell markdown" name="md13">
+(a) **Implement predicate subseq/2 that checks whether the first list is a subsequence of the
+second list. The predicate should allow to use variables in the first argument and for
+elements in the second argument:**
+</div>
+
+<div class="nb-cell program" data-background="true" data-singleline="true" name="p4">
+subseq([], _).
+subseq([X|T1], [X|T2]) :- subseq(T1, T2).
+subseq([X|T1], [_|T2]) :- subseq([X|T1], T2).
+</div>
+
+<div class="nb-cell query" name="q1">
+subseq([2,4], [1,2,3,4,5])
+</div>
+
+<div class="nb-cell query" name="q2">
+L=[1,X,Y], subseq([1,2], L)
+</div>
+
+<div class="nb-cell query" name="q3">
+subseq(X, [1,2,3])
+</div>
+
+<div class="nb-cell markdown" name="md14">
+(b) **Implement predicate search/3, such that search(Needle, Haystack, Position) is true
+when Needle occurs as a sublist in Haystack exactly at position Position:**
+</div>
+
+<div class="nb-cell program" data-background="true" name="p6">
+search([], _, 0).
+search([X|Needle], [X|Haystack], 0) :- search(Needle, Haystack, 0).
+search(X, [_|Needle], Pos) :- search(X, Needle, PrevPos), Pos is (PrevPos + 1).
+</div>
+
+<div class="nb-cell query" name="q5">
+search([a,b,a], [c,a,b,a,b,a,d], Pos)
+</div>
+
+<div class="nb-cell query" name="q15">
+search(Needle, [c,a,b,a,b,a,d], 5)
+</div>
+
+<div class="nb-cell query" name="q6">
+Needle = [a,_,a], search(Needle, [a,b,r,a,c,a,d,a,b,r,a], Pos)
+</div>
+
+<div class="nb-cell markdown" name="md15">
+(c) **Implement predicate replace/4, such that replace(Old, New, OldWhole, NewWhole) is
+true when NewWhole can be produced from OldWhole by replacing zero or more occurrences
+of Old with New:**
+</div>
+
+<div class="nb-cell program" data-background="true" name="p7">
+%replace()
+</div>
+
+<div class="nb-cell markdown" name="md16">
+(d) **Implement a predicate suffix/2 that checks whether one list is a suffix of another list:**
+</div>
+
+<div class="nb-cell program" data-background="true" name="p8">
+suffix(L1, L2) :- 
+    search(L1, L2, Pos),
+    length(L1, Len1), 
+    length(L2, Len2), 
+    Len2 is Len1 + Pos.
+</div>
+
+<div class="nb-cell query" name="q4">
+suffix([a,b,a], [c,a,a,b,a])
+</div>
+
+<div class="nb-cell query" name="q19">
+suffix(X, [c,a,a,b,a])
+</div>
+
+<div class="nb-cell markdown" name="md2">
+(e) **Implement a predicate repeat/2 to check if a list consists of the same element repeating:**
+</div>
+
+<div class="nb-cell program" data-background="true" name="p1">
+repeat(_, []).
+repeat(X, [X|Rest]) :- repeat(X, Rest).
+</div>
+
+<div class="nb-cell query" name="q7">
+repeat(1, [1,1,1])
+</div>
+
+<div class="nb-cell query" name="q8">
+repeat(X, [1,1,1])
+</div>
+
+<div class="nb-cell query" name="q9">
+repeat(1, L)
+</div>
+
+<div class="nb-cell markdown" name="md3">
+### 2. Implement the following predicates on lists of numbers:
+</div>
+
+<div class="nb-cell markdown" name="md4">
+(a) **Implement predicate allLEQ/2 that checks that a given number is less than or equal (=&lt;)
+to all elements in a given list:**
+</div>
+
+<div class="nb-cell program" data-background="true" name="p2">
+allLEQ(_, []).
+allLEQ(X, [Y|Rest]) :- (X =&lt; Y), allLEQ(X, Rest).
+</div>
+
+<div class="nb-cell query" name="q10">
+allLEQ(1, [2,4,3,7])
+</div>
+
+<div class="nb-cell query" name="q11">
+allLEQ(1, [2,4,3,0])
+</div>
+
+<div class="nb-cell markdown" name="md5">
+(b) **Implement predicate minimum/2 that checks that a given number is the minimum of a given
+list:**
+</div>
+
+<div class="nb-cell program" data-background="true" name="p3">
+minimum(Min, [X|Rest]) :-
+    minimum(Rest, X, Min).
+
+minimum([], Min, Min).
+minimum([X|Rest], Acc, Result) :-
+    Min is min(X, Acc),
+    minimum(Rest, Min, Result).
+</div>
+
+<div class="nb-cell query" name="q12">
+minimum(X, [2,4,3,7])
+</div>
+
+<div class="nb-cell markdown" name="md6">
+(c) **Implement predicate partition/4 such that partition(Pivot, List, Less, Greater)
+is true when Less (Greater) contains all elements of List that are less than (resp. greater
+than) Pivot.**
+</div>
+
+<div class="nb-cell program" data-background="true" name="p5">
+partition(_, [], [], []).
+partition(Pivot, [X|List], [X|Less], Greater) :-
+    Pivot &lt; X, partition(Pivot, List, Less, Greater).  						% &lt;
+partition(X, [X|List], Less, Greater) :- partition(X, List, Less, Greater).	% ==
+partition(Pivot, [X|List], Less, [X|Greater]) :-							% &gt;
+    Pivot &gt; X, partition(Pivot, List, Less, Greater).	
+</div>
+
+<div class="nb-cell query" name="q13">
+partition(3, [1,2,3,4,5,6,7], Less, Greater)
+</div>
+
+<div class="nb-cell markdown" name="md8">
+(d) **Implement predicate median/2 that checks if a given number is the median of a given list.
+That is there are exactly as many elements smaller than it as there are elements that are
+greater than it.**
+</div>
+
+<div class="nb-cell program" data-background="true" name="p9">
+% median :-
+</div>
+
+<div class="nb-cell markdown" name="md10">
+### 3. Implement the following predicates on binary numbers, represented as lists of 1s and 0s:
+</div>
+
+<div class="nb-cell markdown" name="md11">
+(a) **Implement a predicate increment/2 that checks whether second binary number is an increment of the first one. The predicate should work both ways:**
+</div>
+
+<div class="nb-cell program" data-background="true" name="p10">
+%increment(Binary, Res) :- 
+</div>
+
+<div class="nb-cell markdown" name="md12">
+(b) **Implement a predicate countTrailingZeros/2 that allows to count trailing zeros of a binary
+number:**
+</div>
+
+<div class="nb-cell program" data-background="true" name="p11">
+countTrailingZeros([], _).
+
+countTrailingZeros([0|Rest], Result) :-
+    countTrailingZeros(Rest, Prev), Result is Prev + 1.
+
+countTrailingZeros([1|Rest], _) :-
+    countTrailingZeros(Rest, 0).
+</div>
+
+<div class="nb-cell query" name="q14">
+countTrailingZeros([1,1,0,1,0,0], N)
+</div>
+
+<div class="nb-cell markdown" name="md17">
+### 4. Implement predicate fib/2 such that fib(X, Y) is true if X and Y are consecutive Fibonacci numbers. Using fib/2, implement fib/1 that can generate all Fibonacci numbers:
+</div>
+
+<div class="nb-cell program" data-background="true" name="p12">
+fib2(1,1).
+fib2(M,N):-
+  fib2(M1,N1),
+  M is N1,
+  N is N1 + M1.
+
+fib(M) :-
+    fib2(M, _).
+</div>
+
+<div class="nb-cell query" name="q16">
+ fib2(1,1)
+</div>
+
+<div class="nb-cell query" name="q17">
+fib2(5,8)
+</div>
+
+<div class="nb-cell query" name="q18">
+fib(Fib)
+</div>
+
+</div>
